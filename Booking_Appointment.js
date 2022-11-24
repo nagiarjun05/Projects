@@ -30,7 +30,7 @@ function onClick(e){
         .then(res=>{
             console.log(res);
         })
-        .catch(err=>console.log(err));       
+        .catch((err)=>console.log(err));       
     }
 };
 
@@ -90,5 +90,5 @@ function showDetails(e){
             userList.appendChild(li);
         })
     })
-    .catch(err=console.log(err));
+    .catch(err=>console.log(err));
 };
