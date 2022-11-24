@@ -10,10 +10,10 @@ expList.addEventListener('click', removeExpense);
 expList.addEventListener('click', editExpDetails);
 
 
-var getMethode=function(){
+var getMethod=function(){
     axios({
         method:'get',
-        url:"https://crudcrud.com/api/ea7bfcc5f3684fb6adb84ad3fe4c6f9f/expensesData",
+        url:"https://crudcrud.com/api/26b00d7828d74d2da5efc8c2402a09fc/expensesData",
     }).then(res=>{
         res.data.forEach(element => {
             var li = document.createElement('li');
@@ -36,47 +36,49 @@ var getMethode=function(){
             li.appendChild(editExpense);
             
             expList.appendChild(li);
+            eDisc.value="";
+            eAmount.value="";
+            eCat.value="";
         });
     }).catch(err=>console.log(err));
 }   
 
-getMethode();
-
+getMethod();
 function onAdd(e){
     e.preventDefault();
     if (filled.name){
-        console.log("if")
         axios({
             method:'put',
-            url:`https://crudcrud.com/api/ea7bfcc5f3684fb6adb84ad3fe4c6f9f/expensesData/${filled.name}`,
+            url:`https://crudcrud.com/api/26b00d7828d74d2da5efc8c2402a09fc/expensesData/${filled.name}`,
             data:{
                 "amount":`${eAmount.value} `,
                 "discr":`${eDisc.value} `,
                 "catg":`${eCat.value} `
-            }
-        }).then(res=>{console.log(res)}).catch(err=>console.log(err));
-        while(expList.hasChildNodes()){
-            expList.removeChild(expList.lastChild);
-        }
-        getMethode();
-    }else{
-        console.log("else")
+            }}).then(()=>{
+                while(expList.hasChildNodes()){
+                    expList.removeChild(expList.lastChild);    
+                }
+
+                filled.removeAttribute("name");
+                getMethod();
+            }).catch(err=>console.log(err))
+    }else{ 
         axios({
             method:'post',
-            url:`https://crudcrud.com/api/ea7bfcc5f3684fb6adb84ad3fe4c6f9f/expensesData`,
+            url:`https://crudcrud.com/api/26b00d7828d74d2da5efc8c2402a09fc/expensesData`,
             data:{
                 "amount":`${eAmount.value} `,
                 "discr":`${eDisc.value} `,
                 "catg":`${eCat.value} `
             }
-        }).then(res=>{console.log(res)}).catch(err=>console.log(err));
-        while(expList.hasChildNodes()){
-            expList.removeChild(expList.lastChild);
-        }
-        getMethode();
+        }).then(res=>{
+            while(expList.hasChildNodes()){
+                expList.removeChild(expList .lastChild);
+            }
+            getMethod();
+        }).catch(err=>console.log(err));
     }
-    
-}
+};
     
 
 function removeExpense(e){
@@ -84,7 +86,7 @@ function removeExpense(e){
     if(e.target.classList.contains('dlt')){
         axios({
             method:'delete',
-            url:`https://crudcrud.com/api/ea7bfcc5f3684fb6adb84ad3fe4c6f9f/expensesData/${e.target.parentElement.id}`,  
+            url:`https://crudcrud.com/api/26b00d7828d74d2da5efc8c2402a09fc/expensesData/${e.target.parentElement.id}`,  
         }).then(res=>console.log(res)).catch(err=>console.log(err))
         expList.removeChild(e.target.parentElement)
     }
