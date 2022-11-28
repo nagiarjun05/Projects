@@ -1,5 +1,5 @@
-const btn=document.getElementById('btn');
-const container=documetn.getElementById('container');
+const btn=document.getElementById("btn");
+const containe=document.getElementById("container");
 
 
 btn.addEventListener('click',()=>{
@@ -11,7 +11,7 @@ function createNotification(){
     notif.classList.add('toast');
 
     notif.innerText='Hello There!!';
-    container.appendchild(notif);
+    container.appendChild(notif);
     setTimeout(()=>{
         notif.remove();
     },3000)
