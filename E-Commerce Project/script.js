@@ -47,11 +47,11 @@ parent_element.addEventListener('click',(e)=>{
     if(e.target.className==='cancel'){
         document.querySelector('#cart').style="display:none;"
     }
-    if(e.target.innerText='REMOVE'){
-        let total_cart_price=document.querySelector('#total-value').innerText;
-        total_cart_price=parseFloat(total_cart_price).toFixed(2)-parseFloat(document.querySelector(`#${e.target.parentNode.parentNode.id} .cart-price`).innerText).toFixed(2);
-        document.querySelector('.cart-number').innerText=parseInt(document.querySelector('.cart-number').innerText)-1
-        document.querySelector('#total-value').innerText=`${total_cart_price.toFixed(2)}`
-        e.target.parentNode.parentNode.remove()
-    }
+    // if(e.target.innerText='REMOVE'){
+    //     let total_cart_price=document.querySelector('#total-value').innerText;
+    //     total_cart_price=parseFloat(total_cart_price).toFixed(2)-parseFloat(document.querySelector(`#${e.target.parentNode.parentNode.id} .cart-price`).innerText).toFixed(2);
+    //     document.querySelector('.cart-number').innerText=parseInt(document.querySelector('.cart-number').innerText)-1
+    //     document.querySelector('#total-value').innerText=`${total_cart_price.toFixed(2)}`
+    //     e.target.parentNode.parentNode.remove()
+    // }
 })
