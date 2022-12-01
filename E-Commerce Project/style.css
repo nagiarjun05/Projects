@@ -118,76 +118,123 @@ body {
     margin:20px 0px;
     padding:0;
 }
+.prod-img{
+    height: 250px;
+    width: 250px;
+    overflow: hidden;
+}
+.prod-images{
+    transform-origin: center center;
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    padding:0px;
+    margin:0px;
+    transition: ease-in 0.5s;
+    filter: brightness(100%);
+}
 
 
-.detail{
+section h2{
+    font-family:"Metal Mania";
+    text-align:center;
+    padding:20px;
+    font-size:30px;
+}
+    
+.container{
+    max-width:500px;
+    margin:0 auto;
+    padding:20px 30px;
+}
+
+#music-content{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content:space-around;
+}
+#music-content div{
+    margin:90px;
+}
+#music-content div h3{
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 15px;
+}
+#music-content .detail{
     display: flex;
-    margin: 7px;
+    margin: 8px;
     align-items: center;
     justify-content: space-between;
 }
+#music-content .card-btn{
+    cursor:pointer;
+    padding:8px;
+    color:white;
+    border:none;
+    font-size:15px;
+    font-weight: bold;
+    border-radius: 4%;
+    background: #56CCF2;
+}
+#music-content .card-btn:hover, #merch-content .card-btn:hover{
+    background: #0eabdf;
+    border: none
+}
 
-#container{
+#merch-content{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content:space-around;
+}
+#merch-content div{
+    margin:30px;
+}
+#merch-content div h3{
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 15px;
+}
+#merch-content .detail{
+    display: flex;
+    margin: 8px;
+    align-items: center;
+    justify-content: space-between;
+}
+#merch-content .card-btn{
+    cursor:pointer;
+    padding:8px;
+    color:white;
+    border:none;
+    font-size:15px;
+    font-weight: bold;
+    border-radius: 4%;
+    background: #56CCF2;
+}
+
+#notify{
     position:fixed;
     bottom:10px;
     right:10px;
 }
 .notification {
-    background-color: #56CCF2;
-    border-radius: 5px;
+    background-color: #56f278;
+    border-radius: 10px;
     color: black;
     padding: 2rem;
     margin: 1rem;
 }
-/* 
-#section{
-    display: flex;
-    flex-direction: row;
-} */
 
-#section1{
-    display:flex;
-    flex-wrap: wrap;
-    justify-content:space-around;
-}
-#section1 div{
-    margin:30px;
-}
-#section1 div h3{
-    display: block;
-    width: 100%;
-    text-align: center;
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 15px;
+.notification h4 span{
+    color:rgb(3, 3, 3);
 }
 
-#section2{
-    display:flex;
-    flex-wrap: wrap;
-    justify-content:space-around;
-}
-#section2 div{
-    margin:30px;
-}
-#section2 div h3{
-    display: block;
-    width: 100%;
-    text-align: center;
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 15px;
-}
-.card{
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    max-width: 250px;
-    max-height: 250px;
-    margin: auto;
-    text-align: center;
-    font-family: arial;
-}
 
 .card-btn{
     height: 2rem;
@@ -246,6 +293,85 @@ img{
     font-weight: 700;
 }
 
+.cart-row{
+    font-size:18px;
+    display:flex;
+}
+
+.cart-header{
+    font-size:1.2rem;
+    font-weight: bold;
+}
+.cart-item{
+    width:45%;
+}
+.cart-img{
+    width:80px;
+    border-radius:8%;
+    margin-right:20px;
+}
+.cart-price{
+    width:20%;
+}
+.cart-quantity{
+    width:35%;
+}
+.cart-column{
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid black;
+    margin-right: 1.5em;
+    padding-bottom: 10px;
+    margin-top: 10px;
+}
+.cart-quantity input{
+    width:40px;
+    height:30px;
+    border:1px solid rgb(0, 204, 255) ;
+    border-radius:8%;
+    outline:none;
+    text-align:center;
+    margin-right:20px;
+}
+.cart-quantity button{
+    color:white;
+    font-weight: bold;
+    background: rgb(231, 76, 76);
+    cursor: pointer;
+    border:none;
+    border-radius:8%;
+    height:30px;
+    outline:none;
+    padding: 0px 7px;
+}
+.cart-quantity button:hover{
+    background: rgb(218, 37, 37);;
+}
+.cart-total{
+    display:flex;
+    flex-direction: row-reverse;
+    font-size:1.2rem;
+    margin:20px;
+}
+.cart-total .total-title{
+    margin-right:10px;
+    font-size:1.5rem;
+}
+
+.cancel{
+    position:absolute;
+    cursor:pointer;
+    color:rgb(104, 86, 86);
+    top:0;
+    right:0;
+    margin:20px;
+    background:none;
+    font-size:16px;
+    font-weight: 700;
+    border:1px solid rgb(121, 117, 117);
+    border-radius:7px;
+    padding:5px;
+}
 
 header .latest-album{
     display:block;
