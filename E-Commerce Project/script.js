@@ -5,41 +5,54 @@ const parent_element=document.querySelector('body');
 parent_element.addEventListener('click',(e)=>{
     if(e.target.className==='card-btn'){
         const id=e.target.parentNode.parentNode.id;
-        const name=document.querySelector(`#${id} h3`).innerText;
-        const img_src=document.querySelector(`#${id} img`).src;
-        const price=e.target.parentNode.children[0].children[0].innerText;
-        let total_price=document.querySelector('#total-value').innerText;
-        if(document.querySelector(`#in-cart-${id}`)){
-            alert('You have already selected this item!!!')
-            return
-        };
-        document.querySelector('.cart-qnty').innerText=parseInt(document.querySelector('.cart-qnty').innerText)+1;
-        const cart_item=document.createElement('div')
-        cart_item.classList.add('cart-row');
-        cart_item.id=`in-cart-${id}`;
-        total_cart_price=parseFloat(total_price)+parseFloat(price);
-        total_cart_price=total_cart_price.toFixed(2);
-        document.querySelector('#total-value').innerText=`${total_cart_price}`
-        cart_item.innerHTML=`
-        <span class='cart-item cart-column'>
-        <img class=cart-img src='${img_src}'  alt='' >
-        <span>${name}</span></span>
-        <span class='cart-price cart-column'>
-        <span>${price}</span></span>
-        <span class='cart-quantity cart-column'>
-        <input type='text' value='1'>
-        <button class='remove' >REMOVE</button>
-        </span>
-        `
-        cart_items.appendChild(cart_item);
-        const notify=document.getElementById('notify');
-        const notification=document.createElement('div');
-        notification.classList.add('notification');
-        notification.innerHTML=`<h4>Your Product : <span>${name}<span> is added to the cart</h4>`;
-        notify.appendChild(notification);
-        setTimeout(()=>{
-            notification.remove()
-        },2500);
+        // console.log(e.target.parentNode.parentNode.children[2].children[0].children[0].innerText);
+        const name=e.target.parentNode.parentNode.children[0].innerText;
+        const img_src=e.target.parentNode.parentNode.children[1].children[0].src;
+        const price=e.target.parentNode.parentNode.children[2].children[0].children[0].innerText;
+        // // let total_price=document.querySelector('#total-value').innerText;
+        // // if(document.querySelector(`#in-cart-${id}`)){
+        // //     alert('You have already selected this item!!!')
+        // //     return
+        // // };
+        axios({
+            method:'post',
+            url:`http://localhost:3000/cart`,
+            data:{
+                "id":`${id}`,
+                "title":`${name} `,
+                "img_src":`${img_src}`,
+                "price":`${price} `
+            }
+        }).then(res=>console.log(res)).catch(err=>console.log(err));
+
+
+        // document.querySelector('.cart-qnty').innerText=parseInt(document.querySelector('.cart-qnty').innerText)+1;
+        // const cart_item=document.createElement('div')
+        // cart_item.classList.add('cart-row');
+        // cart_item.id=`in-cart-${id}`;
+        // total_cart_price=parseFloat(total_price)+parseFloat(price);
+        // total_cart_price=total_cart_price.toFixed(2);
+        // document.querySelector('#total-value').innerText=`${total_cart_price}`
+        // cart_item.innerHTML=`
+        // <span class='cart-item cart-column'>
+        // <img class=cart-img src='${img_src}'  alt='' >
+        // <span>${name}</span></span>
+        // <span class='cart-price cart-column'>
+        // <span>${price}</span></span>
+        // <span class='cart-quantity cart-column'>
+        // <input type='text' value='1'>
+        // <button class='remove' >REMOVE</button>
+        // </span>
+        // `
+        // cart_items.appendChild(cart_item);
+        // const notify=document.getElementById('notify');
+        // const notification=document.createElement('div');
+        // notification.classList.add('notification');
+        // notification.innerHTML=`<h4>Your Product : <span>${name}<span> is added to the cart</h4>`;
+        // notify.appendChild(notification);
+        // setTimeout(()=>{
+        //     notification.remove()
+        // },2500);
     }
     if(e.target.className==='cart-btn'||e.target.className==='cart-btn-bottom'||e.target.className==='cart-bottom'){
         document.querySelector('#cart').style="display:block;"
@@ -79,7 +92,7 @@ window.addEventListener("DOMContentLoaded",()=>{
             // console.log(mainContainer)
             const content=document.createElement('div')
             content.classList.add('content');
-            content.id=`content${element.id}`;
+            content.id=element.id;
             content.innerHTML=`
             <h3>${element.title}</h3>
             <div class="prod-img">
@@ -90,7 +103,7 @@ window.addEventListener("DOMContentLoaded",()=>{
                 <button class="card-btn" type='button'>ADD TO CART</button>
             </div>`
             mainContainer.appendChild(content);
-            console.log(content);
+            // console.log(content);
         });
         
 
