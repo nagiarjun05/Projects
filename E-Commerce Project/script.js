@@ -2,6 +2,8 @@ const cart_items=document.querySelector('#cart .cart-items');
 
 const parent_element=document.querySelector('body');
 
+const pages=document.querySelector('.pagination');
+console.log(pages)
 parent_element.addEventListener('click',(e)=>{
     if(e.target.className==='card-btn'){
         const id=e.target.parentNode.parentNode.id;
@@ -34,8 +36,13 @@ parent_element.addEventListener('click',(e)=>{
         },2500);
     }
     if(e.target.className==='cart-btn'||e.target.className==='cart-btn-bottom'||e.target.className==='cart-bottom'){
+        while(cart_items.firstChild){
+            cart_items.removeChild(cart_items.lastChild)
+        }
+        document.querySelector('#total-value').innerText='0';
+        
         axios.get('http://localhost:3000/cart')
-        .then((data)=>{
+        .then((data)=>{            
             data.data.products.forEach((element)=>{
             const id=element.id;
             const name=element.title;
@@ -43,7 +50,7 @@ parent_element.addEventListener('click',(e)=>{
             const price=element.price;
             const qt=element.cartItem.quantity
             let total_price=document.querySelector('#total-value').innerText;
-
+            // total_price='0';
             // document.querySelector('.cart-qnty').innerText=parseInt(document.querySelector('.cart-qnty').innerText)+1;
             const cart_item=document.createElement('div')
             cart_item.classList.add('cart-row');
@@ -63,8 +70,6 @@ parent_element.addEventListener('click',(e)=>{
             </span>
             `
             cart_items.appendChild(cart_item);
-                console.log(element)
-                console.log(element.cartItem)
             })
         })
         .catch(err=>console.log(err)) 
@@ -74,11 +79,12 @@ parent_element.addEventListener('click',(e)=>{
         document.querySelector('#cart').style="display:none;"
     }
     if(e.target.className==='remove'){
-        axios({
-            method:'delete',
-            url:`https://crudcrud.com/api/b7deaa66ad714b22afdf8b2272fa9917/expensesData/${e.target.parentElement.id}`,  
-        }).then(res=>console.log(res)).catch(err=>console.log(err))
-        // let total_cart_price=document.querySelector('#total-value').innerText;
+        console.log(cart_items)
+        // axios({
+        //     method:'post',
+        //     url:`http:/localhost:3000/cart-delete-item/${e.target.parentNode.parentNode.id}`  
+        // }).then(res=>console.log(res)).catch(err=>console.log(err))
+        // // let total_cart_price=document.querySelector('#total-value').innerText;
         // total_cart_price=parseFloat(total_cart_price).toFixed(2)-parseFloat(document.querySelector(`#${e.target.parentNode.parentNode.id} .cart-price`).innerText).toFixed(2);
         // document.querySelector('.cart-qnty').innerText=parseInt(document.querySelector('.cart-qnty').innerText)-1
         // document.querySelector('#total-value').innerText=`${total_cart_price.toFixed(2)}`
@@ -96,17 +102,13 @@ parent_element.addEventListener('click',(e)=>{
     }
 })
 
-window.addEventListener("DOMContentLoaded",()=>{
-    axios.get('http://localhost:3000/products')
-    .then((data)=>{
 
+function showData(page){
+    axios.get(`http://localhost:3000/products/?page=${page}`)
+    .then((data)=>{
+        // console.log(document.querySelector('#music-content').remove());
         data.data.products.forEach(element => {
-            // console.log(element.id)
-            // console.log(element.title)
-            // console.log(element.price)
-            // console.log(element.imageUrl)
-            const mainContainer=document.querySelector('#music');
-            // console.log(mainContainer)
+            const mainContainer=document.querySelector('#music-content');
             const content=document.createElement('div')
             content.classList.add('content');
             content.id=element.id;
@@ -120,25 +122,42 @@ window.addEventListener("DOMContentLoaded",()=>{
                 <button class="card-btn" type='button'>ADD TO CART</button>
             </div>`
             mainContainer.appendChild(content);
-            // console.log(content);
         });
-        
-
+        pagination(data.data.currentPage,data.data.hasNextPage,data.data.nextPage,data.data.hasPreviousPage,data.data.previousPage)
     })
     .catch(err=>console.log(err))
-})
+}
 
+function pagination(currentPage,hasNextPage,nextPage,hasPreviousPage,previousPage){
+    pages.innerHTML='';
+    if (hasPreviousPage){
+        const prevBtn=document.createElement('button')
+        prevBtn.innerHTML=previousPage;
+        pages.appendChild(prevBtn);
+        prevBtn.addEventListener('click',()=>{
+            showData(previousPage)
+            });
+    }
 
+    const curBtn=document.createElement('button')
+    curBtn.innerHTML=currentPage;
+    pages.appendChild(curBtn);
+    curBtn.addEventListener('click',()=>{
+        showData(currentPage)
+        });
+    
 
+    if (hasNextPage){
+        const nexBtn=document.createElement('button')
+        nexBtn.innerHTML=nextPage;
+        pages.appendChild(nexBtn);
+        nexBtn.addEventListener('click',()=>{
+            showData(nextPage)
+            });
+    }
+}
 
-// <div id="merch-content">
-//             <div id="t-shirt">
-//                 <h3>T-Shirt</h3>
-//                 <div class="prod-img">
-//                     <img class="prod-images" src="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=869&q=80" alt="">
-//                 </div>
-//                 <div class="detail">
-//                     <span>$<span>19.99</span></span>
-//                     <button class="card-btn" type='button'>ADD TO CART</button>
-//                 </div>
-//             </div>
+window.addEventListener("DOMContentLoaded",()=>{
+    const page=1;
+    showData(page)
+});
