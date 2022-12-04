@@ -4,8 +4,6 @@ const parent_element=document.querySelector('body');
 
 const pages=document.querySelector('.pagination');
 
-console.log(document.querySelector(".cart-items").children)
-
 parent_element.addEventListener('click',(e)=>{
     if(e.target.className==='card-btn'){
         const id=e.target.parentNode.parentNode.id;
@@ -99,10 +97,6 @@ parent_element.addEventListener('click',(e)=>{
         e.target.parentNode.parentNode.remove()
     }
     if (e.target.className=='purchase-btn'){
-        // console.log('hello')
-        // axios.get('http://localhost:3000/create-order')
-        // .then(data=>console.log(data))
-        // .catch(err=>console.log(err))
         // if (parseInt(document.querySelector('.cart-qnty').innerText) === 0){
         //     alert('You have Nothing in Cart , Add some products to purchase !');
         //     return
@@ -112,16 +106,10 @@ parent_element.addEventListener('click',(e)=>{
         // document.querySelector('.cart-qnty').innerText = 0
         // document.querySelector('#total-value').innerText = `0`;
         
-        
-        // const id=e.target.parentNode.parentNode.id;
-        // const name=e.target.parentNode.parentNode.children[0].innerText;
-        // const img_src=e.target.parentNode.parentNode.children[1].children[0].src;
-        // const price=e.target.parentNode.parentNode.children[2].children[0].children[0].innerText;
         axios({
             method:'post',
             url:`http://localhost:3000/create-order`,
             })
-        // }).
         .then(res=>{
             let orderId;
             res.data.products.forEach((product)=>{
