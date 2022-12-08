@@ -16,29 +16,35 @@ parent_element.addEventListener('click',(e)=>{
         // };
         axios({
             method:'post',
-            url:`http://localhost:3000/cart`,
+            url:`http://3.7.71.210:3000/cart`,
             data:{
                 "id":`${id}`,
                 "title":`${name} `,
                 "img_src":`${img_src}`,
                 "price":`${price} `
             }
-        }).then(res=>console.log(res)).catch(err=>console.log(err));
-        const notify=document.getElementById('notify');
-        const notification=document.createElement('div');
-        notification.classList.add('notification');
-        notification.innerHTML=`<h4>Your Product : <span>${name}<span> is added to the cart</h4>`;
-        notify.appendChild(notification);
-        setTimeout(()=>{
-            notification.remove()
-        },2500);
+        })
+        .then(res=>{
+            document.querySelector('.cart-qnty').innerText=parseInt(document.querySelector('.cart-qnty').innerText)+1;
+            const notify=document.getElementById('notify');
+            const notification=document.createElement('div');
+            notification.classList.add('notification');
+            notification.innerHTML=`<h4>Your Product : <span>${name}<span> is added to the cart</h4>`;
+            notify.appendChild(notification);
+            setTimeout(()=>{
+                notification.remove()
+            },2500);
+        })
+        .catch(err=>{
+            errNotify(err)
+        });
     }
     if(e.target.className==='cart-btn'||e.target.className==='cart-btn-bottom'||e.target.className==='cart-bottom'){
         cart_items.innerHTML='';
         document.querySelector('.cart-qnty').innerText='0'
         document.querySelector('#total-value').innerText='0';
         
-        axios.get('http://localhost:3000/cart')
+        axios.get('http://3.7.71.210:3000/cart')
         .then((data)=>{
             data.data.products.forEach((element)=>{
             // console.log(element.cartItem.cartId)
@@ -47,6 +53,7 @@ parent_element.addEventListener('click',(e)=>{
             const img_src=element.imageUrl;
             const price=element.price;
             const qt=element.cartItem.quantity
+            // document.querySelector('.cart-qnty').innerText='0';
             let total_price=document.querySelector('#total-value').innerText;
             document.querySelector('.cart-qnty').innerText=parseInt(document.querySelector('.cart-qnty').innerText)+qt;
             const cart_item=document.createElement('div')
@@ -69,32 +76,44 @@ parent_element.addEventListener('click',(e)=>{
             cart_items.appendChild(cart_item);
             })
         })
-        .catch(err=>console.log(err)) 
+        .catch(err=>{
+            errNotify(err)
+        }) 
         document.querySelector('#cart').style="display:block;"
     }
     if(e.target.className==='cancel'){
         document.querySelector('#cart').style="display:none;"
     }
     if(e.target.className==='remove'){
-        // console.log(e.target.parentNode.parentNode.children[0].innerText)
+        // console.log(e.target.parentNode.parentNode.children[3].children[0].value)
         axios({
             method:'post',
-            url:`http://localhost:3000/cart-delete-item/${String(e.target.parentNode.parentNode.id).slice(8)}`,
-            data:{productId:String(e.target.parentNode.parentNode.id).slice(8)}  
-        }).then(res=>console.log(res)).catch(err=>console.log(err))
-        let total_cart_price=document.querySelector('#total-value').innerText;
-        total_cart_price=parseFloat(total_cart_price).toFixed(2)-parseFloat(e.target.parentNode.parentNode.children[1].innerText).toFixed(2);
-        document.querySelector('.cart-qnty').innerText=parseInt(document.querySelector('.cart-qnty').innerText)-1
-        document.querySelector('#total-value').innerText=`${total_cart_price.toFixed(2)}`
-        const notify=document.getElementById('notify');
-        const notification=document.createElement('div');
-        notification.classList.add('notification');
-        notification.innerHTML=`<h4>Your Product : <span>${e.target.parentNode.parentNode.children[0].innerText}<span> is removed from the cart</h4>`;
-        notify.appendChild(notification);
-        setTimeout(()=>{
-            notification.remove()
-        },2500);
-        e.target.parentNode.parentNode.remove()
+            url:`http://3.7.71.210:3000/cart-delete-item/${String(e.target.parentNode.parentNode.id).slice(8)}`,
+            data:{
+                productId:String(e.target.parentNode.parentNode.id).slice(8),
+                quantity:e.target.parentNode.parentNode.children[3].children[0].value
+        }
+        })
+        .then(res=>{
+            // res.config.data.slice((res.config.data.search('quantity')+11),-2)
+
+            let total_cart_price=document.querySelector('#total-value').innerText;
+            total_cart_price=parseFloat(total_cart_price).toFixed(2)-parseFloat(e.target.parentNode.parentNode.children[1].innerText).toFixed(2);
+            document.querySelector('.cart-qnty').innerText=parseInt(document.querySelector('.cart-qnty').innerText)-parseInt(res.config.data.slice((res.config.data.search('quantity')+11),-2))
+            document.querySelector('#total-value').innerText=`${total_cart_price.toFixed(2)}`
+            const notify=document.getElementById('notify');
+            const notification=document.createElement('div');
+            notification.classList.add('notification');
+            notification.innerHTML=`<h4>Your Product : <span>${e.target.parentNode.parentNode.children[1].innerText}<span> is removed from the cart</h4>`;
+            notify.appendChild(notification);
+            setTimeout(()=>{
+                notification.remove()
+            },2500);
+            e.target.parentNode.parentNode.remove()
+        })
+        .catch(err=>{
+            errNotify(err)
+        })
     }
     if (e.target.className=='purchase-btn'){
         // if (parseInt(document.querySelector('.cart-qnty').innerText) === 0){
@@ -108,7 +127,7 @@ parent_element.addEventListener('click',(e)=>{
         
         axios({
             method:'post',
-            url:`http://localhost:3000/create-order`,
+            url:`http://3.7.71.210:3000/create-order`,
             })
         .then(res=>{
             let orderId;
@@ -120,16 +139,21 @@ parent_element.addEventListener('click',(e)=>{
             notification.classList.add('notification');
             notification.innerHTML=`<h4>Thank you for Placing an Order, Your Order ID is <span>${orderId}<span></h4>`;
             notify.appendChild(notification);
+            cart_items.innerHTML='';
+            document.querySelector('.cart-qnty').innerText='0';
+            document.querySelector('#total-value').innerText='0'
             setTimeout(()=>{
                 notification.remove()
             },2500);
-        }).catch(err=>console.log(err));
+        }).catch(err=>{
+            errNotify(err)
+        });
     }
 })
 
 
 function showData(page){
-    axios.get(`http://localhost:3000/products/?page=${page}`)
+    axios.get(`http://3.7.71.210:3000/products/?page=${page}`)
     .then((data)=>{
         const mainContainer=document.querySelector('#music-content');
         mainContainer.innerHTML='';
@@ -150,7 +174,9 @@ function showData(page){
         });
         pagination(data.data.currentPage,data.data.hasNextPage,data.data.nextPage,data.data.hasPreviousPage,data.data.previousPage)
     })
-    .catch(err=>console.log(err))
+    .catch(err=>{
+        errNotify(err)
+    })
 }
 
 function pagination(currentPage,hasNextPage,nextPage,hasPreviousPage,previousPage){
@@ -186,3 +212,15 @@ window.addEventListener("DOMContentLoaded",()=>{
     const page=1;
     showData(page)
 });
+
+
+function errNotify(err){
+    const notify=document.getElementById('notify');
+    const notification=document.createElement('div');
+    notification.classList.add('notification');
+    notification.innerHTML=`<h4>Request Failed with ${err}</h4>`;
+    notify.appendChild(notification);
+    setTimeout(()=>{
+        notification.remove()
+    },2500);   
+}

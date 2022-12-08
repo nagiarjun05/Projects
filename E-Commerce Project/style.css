@@ -51,6 +51,10 @@ body {
     height: 95%;
 }
 
+a {
+    color: inherit;
+    text-decoration: inherit;
+}
 #nav-list{
     background-color:black;
     height:2rem;
